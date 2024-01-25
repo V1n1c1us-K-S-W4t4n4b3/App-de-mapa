@@ -21,7 +21,7 @@ import java.io.IOException
 class GeocoderViewModel(private val geocoder: Geocoder) : ViewModel() {
 
     val address = MutableLiveData<String>()
-    val geoPoint = MutableLiveData<List<Address>?>()
+    val listAddress = MutableLiveData<List<Address>?>()
 
     fun findAddress(latitude: Double, longitude: Double) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -36,7 +36,7 @@ class GeocoderViewModel(private val geocoder: Geocoder) : ViewModel() {
             //val addresses = geocoder.getFromLocationName(text, 5)
             val geocoderNominatim = GeocoderNominatim(BuildConfig.LIBRARY_PACKAGE_NAME)
             val addresses = getAddressesFromText(text)
-            geoPoint.postValue(addresses)
+            listAddress.postValue(addresses)
         }
     }
 

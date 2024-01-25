@@ -1,5 +1,6 @@
 package com.kzdev.appdemap
 
+import android.location.Address
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class CustomAdapter(private val dataSet: MutableList<String>) :
+class CustomAdapter(
+    private val dataSet: MutableList<Address>,
+    private val onItemClicked: (Address) -> Unit,
+) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     /**
@@ -37,15 +41,20 @@ class CustomAdapter(private val dataSet: MutableList<String>) :
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.textView.text = dataSet[position]
+        viewHolder.textView.text = dataSet[position].getAddressLine(0)
+
+        viewHolder.itemView.setOnClickListener {
+            onItemClicked(dataSet[position])
+        }
+
+        // fazer setOnClickLestiner passando a longitude e a latitude para a mainactivity
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
-    fun updateList(newList: List<String>) {
+    fun updateList(newList: List<Address>) {
         dataSet.clear()
         dataSet.addAll(newList)
         notifyDataSetChanged()
     }
-
 }

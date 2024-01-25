@@ -47,4 +47,15 @@
             android:layout_height="match_parent" />
 
     </com.google.android.material.search.SearchView>
+
+    <Button
+        android:id="@+id/bt_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
+        android:text="concluir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

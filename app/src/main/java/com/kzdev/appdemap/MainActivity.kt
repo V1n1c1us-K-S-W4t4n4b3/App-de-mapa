@@ -2,6 +2,7 @@ package com.kzdev.appdemap
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kzdev.appdemap.databinding.ActivityMainBinding
 import com.kzdev.appdemap.databinding.ActivityMapBinding
 import com.kzdev.appdemap.databinding.ActivityMapWithSearchBinding
-import kotlinx.coroutines.runBlocking
 import org.osmdroid.config.Configuration
 import org.osmdroid.library.BuildConfig
 import org.osmdroid.util.GeoPoint
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         observer()
     }
 
-    private fun configMap(){
+    private fun configMap() {
         val map = bindingMapWithSearch.map
         map.setMultiTouchControls(true)
         Configuration.getInstance().userAgentValue = BuildConfig.LIBRARY_PACKAGE_NAME
@@ -95,19 +95,28 @@ class MainActivity : AppCompatActivity() {
 
         val myMapListener = MyMapListener {
             viewModel.findAddress(map.mapCenter.latitude, map.mapCenter.longitude)
+            val intent = imputValues(map.mapCenter.latitude, map.mapCenter.longitude)
+            bindingMapWithSearch.btOk.setOnClickListener {
+                startActivity(intent)
+            }
         }
 
         val myDelayedMapListener = MyDelayedMapListener(myMapListener, 50) {
             bindingMapWithSearch.searchBar.setText("Carregando...")
         }
-
-
-
         map.addMapListener(myDelayedMapListener)
 
     }
 
-    fun observer(){
+    private fun imputValues(latitude: Double, longitude: Double): Intent {
+
+        val intent = Intent(this, LatLongActivity::class.java)
+        intent.putExtra("latitude", latitude)
+        intent.putExtra("longitude", longitude)
+        return intent
+    }
+
+    private fun observer() {
 
         val customAdapter = CustomAdapter(mutableListOf())
         bindingMapWithSearch.rvAddress.adapter = customAdapter
